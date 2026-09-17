@@ -4,8 +4,8 @@ Client de caisse Presik POS reconstruit pour un serveur Tryton 8.0.
 
 > Ce n'est pas une distribution officielle de Presik SAS. Ce paquet est
 > construit localement et contient des correctifs qui n'existent pas en amont :
-> l'authentification par cookie de session de Tryton 8, un import Qt manquant
-> dans 23 fichiers, et l'interface traduite en français, tickets compris.
+> l'authentification par cookie de session de Tryton 8 et l'interface traduite
+> en français.
 
 ## Télécharger et installer
 

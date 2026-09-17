@@ -818,10 +818,6 @@ et le jeton part dans un cookie `tryton_session=login:user_id:token`. Sans ce
 correctif, chaque appel suivant repart sans en-tête `Authorization` et reçoit un
 401 au corps vide.
 
-**L'import Qt manquant.** 23 fichiers appelaient `QCoreApplication.translate()`
-sans jamais importer `QCoreApplication`. Chacun plantait à l'ouverture de son
-écran.
-
 **La traduction française.** 591 chaînes : écran de connexion, écran de vente,
 recherches, facturation, panneau de contrôle, aide, rapports, dialogues et
 lignes de ticket imprimées. Les boutons standard des boîtes de dialogue (Oui,
