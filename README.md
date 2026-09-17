@@ -1,19 +1,19 @@
-# Presik POS 6.0.75+1, build local
+# Presik POS 6.0.75+3, build local
 
 Client de caisse Presik POS reconstruit pour un serveur Tryton 8.0.
 
 > Ce n'est pas une distribution officielle de Presik SAS. Ce paquet est
 > construit localement et contient des correctifs qui n'existent pas en amont :
 > l'authentification par cookie de session de Tryton 8, un import Qt manquant
-> dans 23 fichiers, et l'interface traduite en français.
+> dans 23 fichiers, et l'interface traduite en français, tickets compris.
 
 ## Télécharger et installer
 
 Le paquet Debian est attaché à la [dernière release](../../releases/latest) :
-`presik-pos_6.0.75+1_amd64.deb`, 162 Mo.
+`presik-pos_6.0.75+3_amd64.deb`, 162 Mo.
 
 ```bash
-sudo apt install ./presik-pos_6.0.75+1_amd64.deb
+sudo apt install ./presik-pos_6.0.75+3_amd64.deb
 ```
 
 Il faut Debian 11 ou plus, Ubuntu 20.04 ou plus, ou un dérivé, en amd64, avec
@@ -21,8 +21,8 @@ glibc 2.31 au minimum. Python et PySide6 sont embarqués dans le paquet, il n'y 
 rien d'autre à installer.
 
 Le paquet ne contient aucune adresse de serveur ni aucun compte. Chacun
-renseigne son installation au premier démarrage, par le menu **Opciones**,
-entrée **Servidor / Serveur**.
+renseigne son installation au premier démarrage, par le menu **Options**,
+entrée **Serveur**. La langue se choisit dans le même menu, entrée **Langue**.
 
 ## Comment ce paquet a été créé
 
@@ -45,7 +45,7 @@ se construisent pas. `dpkg-dev` apporte la commande `dpkg-deb`.
 ### 2. Fixer le numéro de version
 
 ```bash
-echo "6.0.75+1" > VERSION
+echo "6.0.75+3" > VERSION
 ```
 
 Ce fichier est la seule source du numéro. Il se retrouve dans le nom du `.deb`
@@ -86,7 +86,7 @@ Un paquet Debian est un dossier qui reproduit l'arborescence d'installation,
 plus un dossier `DEBIAN` pour les métadonnées.
 
 ```bash
-VERSION="6.0.75+1"
+VERSION="6.0.75+3"
 DEB="dist/presik-pos_${VERSION}_amd64"
 
 mkdir -p "$DEB/opt/presik_pos" \
@@ -217,9 +217,9 @@ fichiers avec un propriétaire inexistant sur la machine de destination.
 ### 12. Vérifier le paquet avant de le diffuser
 
 ```bash
-dpkg-deb -f dist/presik-pos_6.0.75+1_amd64.deb Package Version Maintainer
-dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+1_amd64.deb > /dev/null && echo "archive OK"
-dpkg-deb -c dist/presik-pos_6.0.75+1_amd64.deb | wc -l
+dpkg-deb -f dist/presik-pos_6.0.75+3_amd64.deb Package Version Maintainer
+dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+3_amd64.deb > /dev/null && echo "archive OK"
+dpkg-deb -c dist/presik-pos_6.0.75+3_amd64.deb | wc -l
 ```
 
 Les métadonnées doivent être justes, l'archive doit se décompresser sans erreur,
@@ -229,7 +229,7 @@ Puis le contrôle le plus important, celui qui montre la configuration qui
 partira chez l'utilisateur :
 
 ```bash
-dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+1_amd64.deb \
+dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+3_amd64.deb \
   | tar -xO ./opt/presik_pos/config_pos.ini | grep -E "^server=|^database=|^user="
 ```
 
@@ -239,9 +239,9 @@ machine de construction : il faut reprendre à l'étape 3 et reconstruire.
 ### 13. Essayer le paquet
 
 ```bash
-sudo apt install ./dist/presik-pos_6.0.75+1_amd64.deb
+sudo apt install ./dist/presik-pos_6.0.75+3_amd64.deb
 dpkg -l presik-pos
-md5sum dist/presik-pos_6.0.75+1_amd64.deb
+md5sum dist/presik-pos_6.0.75+3_amd64.deb
 ```
 
 La ligne doit commencer par `ii`, ce qui veut dire installé et configuré.

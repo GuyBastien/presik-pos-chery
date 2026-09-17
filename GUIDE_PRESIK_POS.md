@@ -1,6 +1,6 @@
 # Presik POS, guide du build et de l'utilisation
 
-**Version du paquet : 6.0.75+1 (build local)**
+**Version du paquet : 6.0.75+3 (build local)**
 **Écrit par Guivens Chery**
 
 Ce guide est fait de procédures. Chaque étape te donne la commande à taper, puis
@@ -30,7 +30,7 @@ et les [limites connues](#annexe-4-les-limites-connues).
 # A. Construire le paquet
 
 Cette procédure part des sources et se termine par un fichier
-`presik-pos_6.0.75+1_amd64.deb` prêt à être installé.
+`presik-pos_6.0.75+3_amd64.deb` prêt à être installé.
 
 Il te faut une machine Debian ou Ubuntu en amd64, Python 3.12 ou 3.13, les
 commandes `dpkg-deb` et `git`, et une connexion internet.
@@ -82,21 +82,21 @@ Tu dois voir `Python 3.12.x` ou `Python 3.13.x`. Avec une autre version, le gel
 ## Étape 2. Fixer le numéro de version
 
 ```bash
-echo "6.0.75+1" > VERSION
+echo "6.0.75+3" > VERSION
 cat VERSION
 ```
 
-Tu dois voir `6.0.75+1`.
+Tu dois voir `6.0.75+3`.
 
 Ce fichier est la seule source du numéro. Il se retrouve dans le nom du `.deb` et
 dans les métadonnées du paquet.
 
 Un conseil : évite de mettre des lettres après le `+`. Pour dpkg, les lettres se
 classent avant les chiffres, donc `6.0.75+abc` passe pour plus récent que
-`6.0.75+1`, et tes mises à jour partent à l'envers. Tu peux vérifier :
+`6.0.75+3`, et tes mises à jour partent à l'envers. Tu peux vérifier :
 
 ```bash
-dpkg --compare-versions "6.0.75+2" gt "6.0.75+1" && echo "ordre correct"
+dpkg --compare-versions "6.0.75+4" gt "6.0.75+3" && echo "ordre correct"
 ```
 
 ## Étape 3. Vider la configuration d'exemple
@@ -167,7 +167,7 @@ d'installation, plus un dossier `DEBIAN` contenant les métadonnées.
 
 ```bash
 cd ~/presik_pos
-VERSION="6.0.75+1"
+VERSION="6.0.75+3"
 DEB="dist/presik-pos_${VERSION}_amd64"
 
 mkdir -p "$DEB/opt/presik_pos" \
@@ -316,7 +316,7 @@ dpkg-deb --build --root-owner-group "$DEB" "dist/presik-pos_${VERSION}_amd64.deb
 Tu dois voir :
 
 ```
-dpkg-deb: construction du paquet « presik-pos » dans « dist/presik-pos_6.0.75+1_amd64.deb ».
+dpkg-deb: construction du paquet « presik-pos » dans « dist/presik-pos_6.0.75+3_amd64.deb ».
 ```
 
 **La commande rend la main au bout de trois à cinq minutes**, sans rien afficher
@@ -378,25 +378,25 @@ Les sources ne sont pas touchées, seuls les produits du build disparaissent.
 ## Étape 12. Vérifier les métadonnées
 
 ```bash
-dpkg-deb -f dist/presik-pos_6.0.75+1_amd64.deb Package Version Maintainer
+dpkg-deb -f dist/presik-pos_6.0.75+3_amd64.deb Package Version Maintainer
 ```
 
 Tu dois voir :
 
 ```
 Package: presik-pos
-Version: 6.0.75+1
+Version: 6.0.75+3
 Maintainer: Prénom Nom <adresse@exemple.org>
 ```
 
 ## Étape 13. Vérifier que l'archive est saine
 
 ```bash
-dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+1_amd64.deb > /dev/null && echo "archive OK"
-dpkg-deb -c dist/presik-pos_6.0.75+1_amd64.deb | wc -l
+dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+3_amd64.deb > /dev/null && echo "archive OK"
+dpkg-deb -c dist/presik-pos_6.0.75+3_amd64.deb | wc -l
 ```
 
-Tu dois voir `archive OK`, puis un nombre autour de 4565. Aucun message d'erreur.
+Tu dois voir `archive OK`, puis un nombre autour de 4566. Aucun message d'erreur.
 Si la compression a été coupée en route, c'est ici que ça se voit.
 
 ## Étape 14. Vérifier la configuration qui partira chez l'utilisateur
@@ -404,7 +404,7 @@ Si la compression a été coupée en route, c'est ici que ça se voit.
 C'est le contrôle le plus important de toute la procédure.
 
 ```bash
-dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+1_amd64.deb \
+dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+3_amd64.deb \
   | tar -xO ./opt/presik_pos/config_pos.ini | grep -E "^server=|^database=|^user="
 ```
 
@@ -422,9 +422,9 @@ l'étape 3 et reconstruis. Ne diffuse pas ce paquet.
 ## Étape 15. Essayer le paquet sur la machine, puis noter son empreinte
 
 ```bash
-sudo apt install ./dist/presik-pos_6.0.75+1_amd64.deb
+sudo apt install ./dist/presik-pos_6.0.75+3_amd64.deb
 dpkg -l presik-pos
-md5sum dist/presik-pos_6.0.75+1_amd64.deb
+md5sum dist/presik-pos_6.0.75+3_amd64.deb
 ```
 
 Tu dois voir une ligne commençant par `ii`. Garde l'empreinte md5 : elle permet à
@@ -464,7 +464,7 @@ Tu dois voir au moins 700 Mo de libre.
 ## Étape 3. Installer
 
 ```bash
-sudo apt install ./presik-pos_6.0.75+1_amd64.deb
+sudo apt install ./presik-pos_6.0.75+3_amd64.deb
 ```
 
 Attention au `./` devant le nom. Sans lui, `apt` va chercher un paquet appelé
@@ -473,8 +473,8 @@ Attention au `./` devant le nom. Sans lui, `apt` va chercher un paquet appelé
 Tu dois voir, à la fin :
 
 ```
-Dépaquetage de presik-pos (6.0.75+1) ...
-Paramétrage de presik-pos (6.0.75+1) ...
+Dépaquetage de presik-pos (6.0.75+3) ...
+Paramétrage de presik-pos (6.0.75+3) ...
 Traitement des actions différées (« triggers ») pour hicolor-icon-theme ...
 ```
 
@@ -489,7 +489,7 @@ dpkg -l presik-pos
 Tu dois voir une ligne qui commence par `ii` :
 
 ```
-ii  presik-pos  6.0.75+1  amd64  Client point de vente Presik POS (build local)
+ii  presik-pos  6.0.75+3  amd64  Client point de vente Presik POS (build local)
 ```
 
 `ii` veut dire installé et configuré. Si tu vois autre chose, par exemple `iU`,
@@ -547,13 +547,14 @@ presik-pos
 Lance-le depuis un terminal la première fois. Les erreurs s'affichent là, et
 nulle part ailleurs.
 
-Tu dois voir une fenêtre qui demande la langue, Français ou Español. Ton choix
-est gardé dans `~/.config/presik_pos/language.conf`. Pour en changer plus tard,
-passe par le menu **Opciones**, entrée **Idioma / Langue**.
+Tu dois voir l'écran de connexion, en français. Pour passer en espagnol, ouvre
+le menu **Options**, puis **Langue**, puis **Espagnol** : l'écran change tout de
+suite, sans redémarrage. En espagnol, le même menu s'appelle **Opciones**, puis
+**Idioma**. Ton choix est gardé dans `~/.config/presik_pos/language.conf`.
 
 ## Étape 2. Renseigner le serveur
 
-À l'écran de connexion, ouvre le menu **Opciones**, puis **Servidor / Serveur**.
+À l'écran de connexion, ouvre le menu **Options**, puis **Serveur**.
 Saisis l'adresse IP ou le nom `.local` du serveur. C'est enregistré tout de
 suite, sans redémarrage.
 
@@ -740,7 +741,7 @@ sudo dpkg --configure -a
 ## Étape 3. Réinstaller
 
 ```bash
-sudo apt install -y --reinstall ./presik-pos_6.0.75+1_amd64.deb
+sudo apt install -y --reinstall ./presik-pos_6.0.75+3_amd64.deb
 ```
 
 L'étape 2 seule ne suffit pas quand c'est le dépaquetage lui-même qui a été
@@ -821,11 +822,16 @@ correctif, chaque appel suivant repart sans en-tête `Authorization` et reçoit 
 sans jamais importer `QCoreApplication`. Chacun plantait à l'ouverture de son
 écran.
 
-**La traduction française.** 389 chaînes : boutons, messages d'erreur, colonnes
-des tableaux, lignes de ticket, dialogues.
+**La traduction française.** 591 chaînes : écran de connexion, écran de vente,
+recherches, facturation, panneau de contrôle, aide, rapports, dialogues et
+lignes de ticket imprimées. Les boutons standard des boîtes de dialogue (Oui,
+Non, Annuler) sont traduits aussi, grâce aux traductions fournies avec Qt.
 
-**Le choix de la langue au démarrage**, gardé dans
-`~/.config/presik_pos/language.conf`.
+**Le choix de la langue dans le menu Options**, écrit dans la langue active,
+appliqué sans redémarrage et gardé dans `~/.config/presik_pos/language.conf`.
+
+**L'écran de connexion réorganisé.** Les étiquettes ne chevauchent plus les
+champs, et le bouton Quitter est devenu discret.
 
 **Le réglage du serveur depuis l'écran de connexion**, pour ne pas avoir à
 éditer le fichier INI sur chaque poste.
@@ -834,7 +840,7 @@ des tableaux, lignes de ticket, dialogues.
 
 # Annexe 3. Ce qu'il y a dans le paquet
 
-162 Mo, 4565 fichiers, architecture amd64.
+162 Mo, 4566 fichiers, architecture amd64.
 
 | Où | Quoi |
 |---|---|
@@ -876,4 +882,4 @@ barre de menu. Déconnecte-toi pour en changer.
 `locale/*.ts`.** Son analyseur ne reconnaît pas toutes les formes d'appel à
 `self.tr()`, et il supprime les traductions qu'il juge obsolètes.
 
-*Guivens Chery, Presik POS 6.0.75+1*
+*Guivens Chery, Presik POS 6.0.75+3*
