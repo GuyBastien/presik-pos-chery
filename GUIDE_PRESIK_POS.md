@@ -1,6 +1,6 @@
 # Presik POS, guide du build et de l'utilisation
 
-**Version du paquet : 6.0.75+3 (build local)**
+**Version du paquet : 6.0.75+4 (build local)**
 **Écrit par Guivens Chery**
 
 Ce guide est fait de procédures. Chaque étape te donne la commande à taper, puis
@@ -25,12 +25,12 @@ et les [limites connues](#annexe-4-les-limites-connues).
 
 > Ce paquet n'est pas distribué par Presik SAS. C'est un build local, avec des
 > correctifs qui n'existent pas en amont, pour qu'il fonctionne contre un
-> serveur Tryton 8.0.
+> serveur Tryton 7.0 ou 8.0.
 
 # A. Construire le paquet
 
 Cette procédure part des sources et se termine par un fichier
-`presik-pos_6.0.75+3_amd64.deb` prêt à être installé.
+`presik-pos_6.0.75+4_amd64.deb` prêt à être installé.
 
 Il te faut une machine Debian ou Ubuntu en amd64, Python 3.12 ou 3.13, les
 commandes `dpkg-deb` et `git`, et une connexion internet.
@@ -82,21 +82,21 @@ Tu dois voir `Python 3.12.x` ou `Python 3.13.x`. Avec une autre version, le gel
 ## Étape 2. Fixer le numéro de version
 
 ```bash
-echo "6.0.75+3" > VERSION
+echo "6.0.75+4" > VERSION
 cat VERSION
 ```
 
-Tu dois voir `6.0.75+3`.
+Tu dois voir `6.0.75+4`.
 
 Ce fichier est la seule source du numéro. Il se retrouve dans le nom du `.deb` et
 dans les métadonnées du paquet.
 
 Un conseil : évite de mettre des lettres après le `+`. Pour dpkg, les lettres se
 classent avant les chiffres, donc `6.0.75+abc` passe pour plus récent que
-`6.0.75+3`, et tes mises à jour partent à l'envers. Tu peux vérifier :
+`6.0.75+4`, et tes mises à jour partent à l'envers. Tu peux vérifier :
 
 ```bash
-dpkg --compare-versions "6.0.75+4" gt "6.0.75+3" && echo "ordre correct"
+dpkg --compare-versions "6.0.75+5" gt "6.0.75+4" && echo "ordre correct"
 ```
 
 ## Étape 3. Vider la configuration d'exemple
@@ -167,7 +167,7 @@ d'installation, plus un dossier `DEBIAN` contenant les métadonnées.
 
 ```bash
 cd ~/presik_pos
-VERSION="6.0.75+3"
+VERSION="6.0.75+4"
 DEB="dist/presik-pos_${VERSION}_amd64"
 
 mkdir -p "$DEB/opt/presik_pos" \
@@ -256,7 +256,7 @@ Recommends: cups, libusb-1.0-0, avahi-daemon, libnss-mdns
 Maintainer: Prénom Nom <adresse@exemple.org>
 Homepage: https://www.presik.com
 Description: Client point de vente Presik POS (build local)
- Build local de Presik POS 6.0.75, adapté à un serveur Tryton 8.0.
+ Build local de Presik POS 6.0.75, adapté à un serveur Tryton 7.0 ou 8.0.
  Il n'est pas distribué par Presik SAS et contient des correctifs locaux.
  .
  Le paquet embarque Python, PySide6 et toutes les dépendances applicatives.
@@ -316,7 +316,7 @@ dpkg-deb --build --root-owner-group "$DEB" "dist/presik-pos_${VERSION}_amd64.deb
 Tu dois voir :
 
 ```
-dpkg-deb: construction du paquet « presik-pos » dans « dist/presik-pos_6.0.75+3_amd64.deb ».
+dpkg-deb: construction du paquet « presik-pos » dans « dist/presik-pos_6.0.75+4_amd64.deb ».
 ```
 
 **La commande rend la main au bout de trois à cinq minutes**, sans rien afficher
@@ -378,22 +378,22 @@ Les sources ne sont pas touchées, seuls les produits du build disparaissent.
 ## Étape 12. Vérifier les métadonnées
 
 ```bash
-dpkg-deb -f dist/presik-pos_6.0.75+3_amd64.deb Package Version Maintainer
+dpkg-deb -f dist/presik-pos_6.0.75+4_amd64.deb Package Version Maintainer
 ```
 
 Tu dois voir :
 
 ```
 Package: presik-pos
-Version: 6.0.75+3
+Version: 6.0.75+4
 Maintainer: Prénom Nom <adresse@exemple.org>
 ```
 
 ## Étape 13. Vérifier que l'archive est saine
 
 ```bash
-dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+3_amd64.deb > /dev/null && echo "archive OK"
-dpkg-deb -c dist/presik-pos_6.0.75+3_amd64.deb | wc -l
+dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+4_amd64.deb > /dev/null && echo "archive OK"
+dpkg-deb -c dist/presik-pos_6.0.75+4_amd64.deb | wc -l
 ```
 
 Tu dois voir `archive OK`, puis un nombre autour de 4566. Aucun message d'erreur.
@@ -404,7 +404,7 @@ Si la compression a été coupée en route, c'est ici que ça se voit.
 C'est le contrôle le plus important de toute la procédure.
 
 ```bash
-dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+3_amd64.deb \
+dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+4_amd64.deb \
   | tar -xO ./opt/presik_pos/config_pos.ini | grep -E "^server=|^database=|^user="
 ```
 
@@ -422,9 +422,9 @@ l'étape 3 et reconstruis. Ne diffuse pas ce paquet.
 ## Étape 15. Essayer le paquet sur la machine, puis noter son empreinte
 
 ```bash
-sudo apt install ./dist/presik-pos_6.0.75+3_amd64.deb
+sudo apt install ./dist/presik-pos_6.0.75+4_amd64.deb
 dpkg -l presik-pos
-md5sum dist/presik-pos_6.0.75+3_amd64.deb
+md5sum dist/presik-pos_6.0.75+4_amd64.deb
 ```
 
 Tu dois voir une ligne commençant par `ii`. Garde l'empreinte md5 : elle permet à
@@ -464,7 +464,7 @@ Tu dois voir au moins 700 Mo de libre.
 ## Étape 3. Installer
 
 ```bash
-sudo apt install ./presik-pos_6.0.75+3_amd64.deb
+sudo apt install ./presik-pos_6.0.75+4_amd64.deb
 ```
 
 Attention au `./` devant le nom. Sans lui, `apt` va chercher un paquet appelé
@@ -473,8 +473,8 @@ Attention au `./` devant le nom. Sans lui, `apt` va chercher un paquet appelé
 Tu dois voir, à la fin :
 
 ```
-Dépaquetage de presik-pos (6.0.75+3) ...
-Paramétrage de presik-pos (6.0.75+3) ...
+Dépaquetage de presik-pos (6.0.75+4) ...
+Paramétrage de presik-pos (6.0.75+4) ...
 Traitement des actions différées (« triggers ») pour hicolor-icon-theme ...
 ```
 
@@ -489,7 +489,7 @@ dpkg -l presik-pos
 Tu dois voir une ligne qui commence par `ii` :
 
 ```
-ii  presik-pos  6.0.75+3  amd64  Client point de vente Presik POS (build local)
+ii  presik-pos  6.0.75+4  amd64  Client point de vente Presik POS (build local)
 ```
 
 `ii` veut dire installé et configuré. Si tu vois autre chose, par exemple `iU`,
@@ -531,7 +531,7 @@ Si le ping reste muet, le réseau bloque sans doute le multicast, ce qui est
 courant en Wi-Fi invité. Ne cherche pas plus loin, utilise l'adresse IP.
 
 > Le serveur, de son côté, doit réunir trois conditions. Il tourne en
-> Tryton 8.0, pas 7.x ni 6.x. Les modules de vente de Presik y sont installés et
+> Tryton 7.0 ou 8.0, pas 6.x. Les modules de vente de Presik y sont installés et
 > activés sur la base. Enfin, un magasin, un terminal de caisse et un
 > utilisateur rattaché aux deux existent déjà. Si tu n'administres pas le
 > serveur, transmets cette liste à celui qui s'en occupe.
@@ -741,7 +741,7 @@ sudo dpkg --configure -a
 ## Étape 3. Réinstaller
 
 ```bash
-sudo apt install -y --reinstall ./presik-pos_6.0.75+3_amd64.deb
+sudo apt install -y --reinstall ./presik-pos_6.0.75+4_amd64.deb
 ```
 
 L'étape 2 seule ne suffit pas quand c'est le dépaquetage lui-même qui a été
@@ -790,7 +790,7 @@ presik-pos
 | Ce que tu lis | Ce que c'est vraiment | Quoi faire |
 |---|---|---|
 | `TypeError: string indices must be integers` | un appel au serveur a échoué, le code a reçu une chaîne d'erreur réseau là où il attendait une liste | vérifier le réseau avec `nc -vz <serveur> 8000` |
-| `JSONDecodeError: zero-length document` | le serveur a répondu 401 avec un corps vide, le jeton de session n'est pas passé | vérifier le mot de passe, puis que le serveur est bien en Tryton 8.0 |
+| `JSONDecodeError: zero-length document` | le serveur a répondu 401 avec un corps vide, le jeton de session n'est pas passé | vérifier le mot de passe, puis que le serveur est bien en Tryton 7.0 ou 8.0 |
 | `JSONDecodeError: unexpected character` | le serveur a renvoyé une page d'erreur HTML au lieu de données | côté serveur, un module de vente manque ou n'est pas activé |
 | `ValueError: too many values to unpack` | la configuration de vente est incomplète côté serveur | à faire compléter par l'administrateur |
 | l'application se ferme juste après la connexion | le magasin, le terminal ou le rattachement de l'utilisateur manque | à créer côté serveur |
@@ -810,13 +810,17 @@ débranché.
 
 # Annexe 2. Ce que corrige ce build
 
-**L'authentification Tryton 8.** C'est le correctif central. Le client appelait
+**L'authentification.** C'est le correctif central. Le client appelait
 `/<base>/fast_login` et lisait le jeton de session dans le corps de la réponse.
-Tryton 8 a changé de méthode : l'appel est maintenant `/<base>/session/login`
-avec `common.db.login`, le corps ne contient que l'identifiant de l'utilisateur,
-et le jeton part dans un cookie `tryton_session=login:user_id:token`. Sans ce
-correctif, chaque appel suivant repart sans en-tête `Authorization` et reçoit un
-401 au corps vide.
+Cette adresse n'existe plus. Le client essaie d'abord `/<base>/session/login`,
+la forme de Tryton 8 : le corps ne contient que l'identifiant de l'utilisateur
+et le jeton arrive dans un cookie `tryton_session=login:user_id:token`. Si le
+serveur ne connaît pas cette adresse, il répond 404 ou 405, et le client
+repasse alors par `/<base>/`, la forme de Tryton 7.0, qui renvoie l'identifiant
+et le jeton ensemble dans le corps. Dans les deux cas la méthode appelée est
+`common.db.login` et la suite des échanges part avec un en-tête
+`Authorization: Session`. Sans ce correctif, chaque appel suivant repart sans
+en-tête et reçoit un 401 au corps vide.
 
 **La traduction française.** 591 chaînes : écran de connexion, écran de vente,
 recherches, facturation, panneau de contrôle, aide, rapports, dialogues et
@@ -878,4 +882,4 @@ barre de menu. Déconnecte-toi pour en changer.
 `locale/*.ts`.** Son analyseur ne reconnaît pas toutes les formes d'appel à
 `self.tr()`, et il supprime les traductions qu'il juge obsolètes.
 
-*Guivens Chery, Presik POS 6.0.75+3*
+*Guivens Chery, Presik POS 6.0.75+4*
