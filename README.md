@@ -1,4 +1,4 @@
-# Presik POS 6.0.75+4, build local
+# Presik POS 6.0.75+5, build local
 
 Client de caisse Presik POS reconstruit pour un serveur Tryton 7.0 ou 8.0.
 
@@ -10,10 +10,10 @@ Client de caisse Presik POS reconstruit pour un serveur Tryton 7.0 ou 8.0.
 ## Télécharger et installer
 
 Le paquet Debian est attaché à la [dernière release](../../releases/latest) :
-`presik-pos_6.0.75+4_amd64.deb`, 162 Mo.
+`presik-pos_6.0.75+5_amd64.deb`, 162 Mo.
 
 ```bash
-sudo apt install ./presik-pos_6.0.75+4_amd64.deb
+sudo apt install ./presik-pos_6.0.75+5_amd64.deb
 ```
 
 Il faut Debian 11 ou plus, Ubuntu 20.04 ou plus, ou un dérivé, en amd64, avec
@@ -45,7 +45,7 @@ se construisent pas. `dpkg-dev` apporte la commande `dpkg-deb`.
 ### 2. Fixer le numéro de version
 
 ```bash
-echo "6.0.75+4" > VERSION
+echo "6.0.75+5" > VERSION
 ```
 
 Ce fichier est la seule source du numéro. Il se retrouve dans le nom du `.deb`
@@ -86,7 +86,7 @@ Un paquet Debian est un dossier qui reproduit l'arborescence d'installation,
 plus un dossier `DEBIAN` pour les métadonnées.
 
 ```bash
-VERSION="6.0.75+4"
+VERSION="6.0.75+5"
 DEB="dist/presik-pos_${VERSION}_amd64"
 
 mkdir -p "$DEB/opt/presik_pos" \
@@ -217,9 +217,9 @@ fichiers avec un propriétaire inexistant sur la machine de destination.
 ### 12. Vérifier le paquet avant de le diffuser
 
 ```bash
-dpkg-deb -f dist/presik-pos_6.0.75+4_amd64.deb Package Version Maintainer
-dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+4_amd64.deb > /dev/null && echo "archive OK"
-dpkg-deb -c dist/presik-pos_6.0.75+4_amd64.deb | wc -l
+dpkg-deb -f dist/presik-pos_6.0.75+5_amd64.deb Package Version Maintainer
+dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+5_amd64.deb > /dev/null && echo "archive OK"
+dpkg-deb -c dist/presik-pos_6.0.75+5_amd64.deb | wc -l
 ```
 
 Les métadonnées doivent être justes, l'archive doit se décompresser sans erreur,
@@ -229,7 +229,7 @@ Puis le contrôle le plus important, celui qui montre la configuration qui
 partira chez l'utilisateur :
 
 ```bash
-dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+4_amd64.deb \
+dpkg-deb --fsys-tarfile dist/presik-pos_6.0.75+5_amd64.deb \
   | tar -xO ./opt/presik_pos/config_pos.ini | grep -E "^server=|^database=|^user="
 ```
 
@@ -239,9 +239,9 @@ machine de construction : il faut reprendre à l'étape 3 et reconstruire.
 ### 13. Essayer le paquet
 
 ```bash
-sudo apt install ./dist/presik-pos_6.0.75+4_amd64.deb
+sudo apt install ./dist/presik-pos_6.0.75+5_amd64.deb
 dpkg -l presik-pos
-md5sum dist/presik-pos_6.0.75+4_amd64.deb
+md5sum dist/presik-pos_6.0.75+5_amd64.deb
 ```
 
 La ligne doit commencer par `ii`, ce qui veut dire installé et configuré.
